@@ -1,113 +1,141 @@
+"use client";
+
+import { useMediaQuery } from "@uidotdev/usehooks";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function Home() {
+  const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
+  const qnaData = [
+    {
+      id: 1,
+      title: "What is Frontend Mentor, and how will it help me?",
+      content:
+        "Frontend Mentor offers realistic coding challenges to help developers improve their frontend coding skills with projects in HTML, CSS, and JavaScript. It’s suitable for all levels and ideal for portfolio building.",
+    },
+    {
+      id: 2,
+      title: "Is Frontend Mentor free?",
+      content:
+        "Frontend Mentor offer free challenges but there is subscription available to access premium challenge",
+    },
+    {
+      id: 3,
+      title: "Can I use Frontend Mentor projects in my portfolio?",
+      content:
+        "Definitely! Please do feel free to use whatever you build in your portfolio. Helping developers add professional-looking projects to their portfolio was one of the reasons we created this platform!",
+    },
+    {
+      id: 4,
+      title: "How can I get help if I'm stuck on a challenge?",
+      content: `The best (and quickest) way to get help on a challenge is in our Discord server. There are thousands of other developers in there, so it's a great place to ask questions. We even have a dedicated "help" channel!`,
+    },
+  ];
+
+  const [qnaActive, setQnaActive] = useState<number | null>(qnaData[0].id);
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main className="flex flex-1 h-dvh w-full flex-col bg-light_pink items-center pb-6">
+      <div className="w-full aspect-[375/232] sm:aspect-[1440/320] relative">
+        {isSmallDevice ? (
+          <Image
+            src={"/images/background-pattern-mobile.svg"}
+            alt="background"
+            fill
+            className="object-cover"
+          />
+        ) : (
+          <Image
+            src={"/images/background-pattern-desktop.svg"}
+            alt="background"
+            fill
+            className="object-cover"
+          />
+        )}
+      </div>
+      <div className="w-[327px] flex flex-col gap-6 p-6 -mt-[89.5px] bg-white z-20 rounded-lg sm:rounded-2xl sm:w-[600px] sm:p-10 sm:gap-8 ">
+        <div className="flex flex-row items-center gap-6">
+          <div className="relative w-6 h-6 sm:w-10 sm:h-10">
+            <Image src={"icons/icon-star.svg"} fill alt="star-icon" />
+          </div>
+          <h2 className="font-bold text-[2rem] leading-[2.375rem] tracking-normal text-dark_purple sm:text-[3.5rem] sm:leading-[4.10625rem]">
+            FAQs
+          </h2>
+        </div>
+
+        <div className="flex flex-col gap-6">
+          {qnaData.map((qna) => {
+            return (
+              <>
+                <Accordion
+                  key={qna.id}
+                  id={qna.id}
+                  open={qnaActive === qna.id}
+                  onOpen={(e, id: number) => {
+                    e.preventDefault();
+                    if (qnaActive === id) {
+                      setQnaActive(null);
+                      return;
+                    }
+                    setQnaActive(id);
+                  }}
+                  title={qna.title}
+                  content={qna.content}
+                />
+                {qna.id !== qnaData[qnaData.length - 1].id && (
+                  <hr className="h-px bg-light_pink" />
+                )}
+              </>
+            );
+          })}
         </div>
       </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
     </main>
+  );
+}
+
+function Accordion({
+  id,
+  title,
+  content,
+  open,
+  onOpen,
+}: {
+  id: number;
+  title: string;
+  content: string;
+  open: boolean;
+  onOpen: (e: React.MouseEvent<HTMLDivElement>, id: number) => void;
+}) {
+  return (
+    <div
+      className={`transition-all duration-1000 h-fit relative overflow-hidden ${
+        !open ? "" : ""
+      }`}
+    >
+      <div className="flex flex-row gap-6 items-center">
+        <div className="flex-1 text-base font-semibold leading-[19px] text-dark_purple">
+          {title}
+        </div>
+        <div
+          className="relative w-[1.875rem] h-[1.875rem] cursor-pointer"
+          onClick={(e) => {
+            onOpen(e, id);
+          }}
+        >
+          {open ? (
+            <Image src={"icons/icon-minus.svg"} fill alt="minus-icon" />
+          ) : (
+            <Image src={"icons/icon-plus.svg"} fill alt="minus-icon" />
+          )}
+        </div>
+      </div>
+      <div
+        className={`${
+          open ? "h-full  pt-6" : "h-0  pt-0"
+        } overflow-hidden group-active: text-sm leading-normal font-normal text-pale_purple`}
+      >
+        {content}
+      </div>
+    </div>
   );
 }
