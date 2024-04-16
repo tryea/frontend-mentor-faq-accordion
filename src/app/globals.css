@@ -6,4 +6,14 @@
   .text-balance {
     text-wrap: balance;
   }
+
+  .bg-header {
+    background-image: url("/images/background-pattern-mobile.svg");
+  }
+
+  @media (min-width: 640px) {
+    .bg-header {
+      background-image: url("/images/background-pattern-desktop.svg");
+    }
+  }
 }
